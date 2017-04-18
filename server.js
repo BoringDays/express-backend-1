@@ -1,16 +1,16 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import multer from 'multer'
+// import multer from 'multer'
 import logger from 'morgan'
 
 import routes from './server/routes'
 
 const app = express()
+// const upload = multer()
 const port = 3000
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extends: true}))
-app.use(multer())
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(logger('dev'))
 
 app.use('/api', routes)
