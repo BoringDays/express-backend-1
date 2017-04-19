@@ -3,7 +3,7 @@ import bodyParser from 'body-parser'
 // import multer from 'multer'
 import logger from 'morgan'
 
-import routes from './server/routes'
+import routes from './routes/index'
 
 const app = express()
 // const upload = multer()

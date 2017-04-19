@@ -2,10 +2,12 @@
   "name": "express_backend_1",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server/index.js",
   "scripts": {
-    "server": "nodemon --exec babel-node server.js",
-    "debug": "nodemon --exec babel-node --debug --inspect server.js",
+    "start": "nodemon --exec babel-node server/index.js",
+    "debug": "nodemon --exec babel-node --debug --inspect --sourceMap=true server/index.js",
+    "build": "babel server -d dist",
+    "serve": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

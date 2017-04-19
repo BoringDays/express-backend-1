@@ -9,11 +9,13 @@
  * @param sort {String} 排序方式
  */
 const findList = (req, res, Model, sort = '-_id') => {
-  const page = Number(req.param.page)
-  const pageNum = Number(req.params.pageNum)
-  const start = page * (pageNum - 1)
-  const limit = page * pageNum
+  const page = Number(req.params.page)
+  const itemsPerPage = Number(req.params.itemsPerPage)
+  const start = page * (itemsPerPage - 1)
+  const limit = page * itemsPerPage
 
+  //eslint-disable-next-line
+  // debugger
   Promise.all([
     Model.find().sort(sort).skip(start).limit(limit).exec(),
     Model.count()

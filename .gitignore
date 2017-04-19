@@ -2,3 +2,4 @@ node_modules
 .idea
 .ideas
 .DS_Store
+.dist
