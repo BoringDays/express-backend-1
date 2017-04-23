@@ -8,8 +8,9 @@ const router = express.Router()
 
 router.route('/products')
   .get((req, res, next) => {
+    //eslint-disable-next-line
+    // debugger
     utils.findList(req, res, Product)
-    next()
   })
   .post((req, res, next) => {
     // Product.find().exec()
