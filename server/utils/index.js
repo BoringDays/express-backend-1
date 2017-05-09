@@ -1,23 +1,49 @@
-// 已知skip方法在数据量大的时候存在性能问题，因项目不大，暂时无视这些问题
-// https://cnodejs.org/topic/51508570604b3d512113f1b3
-
 /**
- * 查询列表分页数据
- * @param req {Object} 请求
+ * 查询列表所有数据
+ * @param data {Object} 请求参数
  * @param res {Object} 返回
  * @param Model {Model} 查询的model
  * @param sort {String} 排序方式
  */
-const findList = (req, res, Model, sort = '-_id') => {
-  const page = Number(req.params.page)
-  const itemsPerPage = Number(req.params.itemsPerPage)
+const findList = (data, res, Model, sort = '-_id') => {
+  //eslint-disable-next-line
+  // debugger
+  Model.find(data.filterConditions, data.resultColumns).sort(sort).exec()
+    .then(result => {
+      res.json({
+        code: 200,
+        data: {
+          list: result
+        }
+      })
+    })
+    .catch(err => {
+      res.json({
+        code: 500,
+        errMsg: '' + err
+      })
+    })
+}
+
+/**
+ * 查询列表分页数据
+ * 已知skip方法在数据量大的时候存在性能问题，因项目不大，暂时无视这些问题
+ * https://cnodejs.org/topic/51508570604b3d512113f1b3
+ * @param data {Object} 请求参数
+ * @param res {Object} 返回
+ * @param Model {Model} 查询的model
+ * @param sort {String} 排序方式
+ */
+const findPagedList = (data, res, Model, sort = '-_id') => {
+  const page = Number(data.page)
+  const itemsPerPage = Number(data.itemsPerPage)
   const start = page * (itemsPerPage - 1)
   const limit = page * itemsPerPage
 
   //eslint-disable-next-line
   // debugger
   Promise.all([
-    Model.find().sort(sort).skip(start).limit(limit).exec(),
+    Model.find(data.filterConditions, data.resultColumns).sort(sort).skip(start).limit(limit).exec(),
     Model.count()
   ])
     .then(result => {
@@ -49,7 +75,7 @@ const findList = (req, res, Model, sort = '-_id') => {
  * @param Model {Model} 查询的model
  */
 const findData = (data, res, Model) => {
-  Model.findOne(data).exec()
+  Model.findOne(data.filterConditions, data.resultColumns).exec()
     .then(result => {
       res.json({
         code: 200,
@@ -132,6 +158,7 @@ const deleteData = (data, res, Model) => {
 
 export {
   findList,
+  findPagedList,
   findData,
   insertData,
   updateData,
