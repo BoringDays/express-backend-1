@@ -20,7 +20,7 @@ const findList = (data, res, Model, sort = '-_id') => {
     .catch(err => {
       res.json({
         code: 500,
-        errMsg: '' + err
+        errMsg: `${err}`
       })
     })
 }
@@ -63,7 +63,7 @@ const findPagedList = (data, res, Model, sort = '-_id') => {
     .catch(err => {
       res.json({
         code: 500,
-        errMsg: '' + err
+        errMsg: `${err}`
       })
     })
 }
@@ -85,7 +85,7 @@ const findData = (data, res, Model) => {
     .catch(err => {
       res.json({
         code: 500,
-        errMsg: '' + err
+        errMsg: `${err}`
       })
     })
 }
@@ -107,18 +107,41 @@ const insertData = (data, res, Model) => {
     .catch(err => {
       res.json({
         code: 500,
-        errMsg: '' + err
+        errMsg: `${err}`
       })
     })
 }
 
 /**
- * 更新数据
+ * 更新一条数据
+ * @param data {Object} 需要更新的数据
+ * @param res {Object} 返回
+ * @param Model {Model} 需要更新的model
+ * @param options {Object} 更新数据的设置
+ */
+const updateOneData = (data, res, Model, options) => {
+  Model.findByIdAndUpdate(data.id, data.data, options).exec()
+    .then(() => {
+      res.json({
+        code: 200,
+        data: 'update succeed!'
+      })
+    })
+    .catch(err => {
+      res.json({
+        code: 500,
+        errMsg: `${err}`
+      })
+    })
+}
+
+/**
+ * 更新批量数据
  * @param data {Object} 需要更新的数据
  * @param res {Object} 返回
  * @param Model {Model} 需要更新的model
  */
-const updateData = (data, res, Model) => {
+const updateDatas = (data, res, Model) => {
   Model.update({_id: data.id}, data).exec()
     .then(() => {
       res.json({
@@ -129,7 +152,7 @@ const updateData = (data, res, Model) => {
     .catch(err => {
       res.json({
         code: 500,
-        errMsg: '' + err
+        errMsg: `${err}`
       })
     })
 }
@@ -161,6 +184,7 @@ export {
   findPagedList,
   findData,
   insertData,
-  updateData,
+  updateOneData,
+  updateDatas,
   deleteData
 }
